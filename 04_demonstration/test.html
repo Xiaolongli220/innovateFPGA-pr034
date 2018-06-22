@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>  
+<html>  
+<head>  
+<meta charset="UTF-8" />  
+<title>BeamForming</title>  
+<script type="text/javascript" src="./jquery-3.3.1.js"></script>  
+
+</head>  
+<body>  
+
+<p id="container">
+<canvas id="cavsElem" style="margin: 100px;">
+
+</canvas>
+</p>
+<script>
+listx = [];
+listy = [];
+
+(function(){
+
+
+	$.getJSON ("./test.json", function (data)  
+	{   
+		
+		   
+
+		 $.each (data, function (i, item)  
+            {  
+            	
+                listx.push(item.theta); 
+                 listy.push(item.phi); 
+                
+            }); 
+		
+
+
+		var canvas = document.getElementById('cavsElem');
+		var ctx = canvas.getContext("2d");
+
+		var imgObj = new Image();
+		imgObj.src = "./cam.png";
+		imgObj.onload = function(){
+               
+                ctx.drawImage(this, 460, 320,100,250);//this即是imgObj,保持图片的原始大小：470*480
+                //ctx.drawImage(this, 0, 0,1024,768);//改变图片的大小到1024*768
+            }
+		canvas.width = 1200;
+		canvas.height = 600;
+		canvas.style.border = '1px solid #000';
+
+		var x0 = 0;       //原点
+		var y0 = 600;
+		//绘制x轴 
+
+		var maxHeight  = 300;
+		var arrowWidth = 10;
+		ctx.beginPath();
+		ctx.strokeStyle = 'blue';
+		ctx.moveTo(x0,y0);
+		ctx.lineTo(x0+1200, y0);
+
+		ctx.stroke();
+		ctx.setLineDash([10]);
+		ctx.beginPath();
+		ctx.strokeStyle = 'black';
+		ctx.moveTo(x0,y0);
+		ctx.lineTo(x0+300, y0-250);
+		ctx.stroke();
+		ctx.moveTo(x0+1200,y0);
+		ctx.lineTo(x0+900, y0-250);
+		ctx.lineTo(x0+300, y0-250);
+		ctx.lineTo(x0+300, y0-500);
+		ctx.moveTo(x0+900, y0-250);
+		ctx.lineTo(x0+900, y0-500);
+		ctx.moveTo(x0+900, y0-500);
+		ctx.lineTo(x0+300, y0-500);
+		ctx.moveTo(900, 100);
+		ctx.lineTo(1200, 0);
+		ctx.moveTo(300, 100);
+		ctx.lineTo(0, 0);
+		ctx.stroke();
+		ctx.font="30px Arial";
+		// ctx.fillText("x",150,y0+400);
+		// ctx.fillText("y",950,y0);
+		// ctx.fillText("z",x0,50);
+
+
+
+
+
+		
+			ctx.beginPath();
+			
+			ctx.setLineDash([0]);
+			ctx.moveTo(510,320);
+			
+			ctx.lineTo(590+5*(listy[0]-90), 250+3*(listx[0]-90));
+			ctx.stroke();
+		
+
+	}
+);
+
+}());
+</script> 
+<script language="JavaScript">
+function myrefresh()
+{
+       window.location.reload();
+}
+setTimeout('myrefresh()',250); //指定1秒刷新一次
+</script>
+</body>  
+</html> 
